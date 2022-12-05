@@ -8,53 +8,54 @@ const Group = require('../models/Group')
 // })
 // var db = Mongo.getDb()
 
-const mongoClient = require('mongodb').MongoClient
-const dbURL = "mongodb://0.0.0.0:27017/user"
-mongoClient.connect(dbURL, (err, database) => {
-        if(err) {return console.log(err)}
-        else console.log("connected to mongoBD")
+const mongodb = require('mongodb')
+// const dbURL = "mongodb://0.0.0.0:27017/user"
+// mongoClient.connect(dbURL, (err, database) => {
+//         if(err) {return console.log(err)}
+//         else console.log("connected to mongoBD")
     
-    db = database.db()
-})
+//     db = database.db()
+// })
 const userController = {
     createUser: async(req, res) =>{
         try{
 
-            const newUser = new User(req.body.UserName,
+            const newUser =new User(req.body.UserName,
                 req.body.Password,
                 req.body.Email,
                 req.body.Gender,
                 req.body.GroupName)
-                newUser.addUser()
-                await db.collection("group").updateOne(
-                    {groupName : req.body.GroupName},
-                    {
-                        $push: {memberGroup : newUser}
+            const group = new Group
+            const user = await newUser.addUser()
+            group.query().updateOne(
+                {"GroupName" : req.GroupName},{
+                    
+                    $push: {
+                        member: newUser
                     }
-                    )
-                    res.json(newUser)
+                }
+            )
+            res.json(user)
         }catch(err){
             console.log(err)
+            res.json("add user fail")
         }
     },
     getUserList: async(req, res) =>{
-        const newUser = new User
-        const items = newUser.getData()
-        res.json(items)
-        
+        const newUser =await new User
+        const items =await newUser.getData()
+        // console.log(items)
+        items.toArray((err, item)=> {
+            
+            res.json(item)
+        })
     },
     deleteUser: async(req, res)=>{
         try{
             const userId = req.params['id'];
-            db.collection('user').deleteOne( { "_id" : mongodb.ObjectId(userId) } );
-            db.collection('group').updateOne(
-                {memberGroup: {
-                    _id : mongodb.ObjectId(userId)
-                }},
-                {
-                    $pull: {memberGroup : {_id: mongodb.ObjectId(userId)}}
-                }
-            )
+            const user = new User
+
+            await user.deleteUser( userId );
             res.status(200).json("delete success")
     
         }catch (err){
@@ -65,14 +66,11 @@ const userController = {
     updateUser: async (req, res)=>{
         try{
             const userId = req.params['id'];
-            db.collection('user').updateOne(
+            const newUser = new User(req.body.UserName, req.body.Password, req.body.Email, req.body.Gender, req.body.GroupName)
+            await newUser.query().updateOne(
                 { _id : mongodb.ObjectId(userId) },
                 {
-                    $set : {"UserName": req.body.UserName,
-                    "Password" : req.body.Password,
-                    "Email" : req.body.Email,
-                    "Gender" : req.body.Gender,
-                    "GroupName" : req.body.GroupName}
+                    $mul : newUser
                 }
             )
             res.status(200).json("updated")
@@ -81,11 +79,7 @@ const userController = {
             res.json("update fail!")
         }
     },
-    test: (req, res) => {
-        db.collection('user').insertOne(req.body.test)
-        res.status(200)
-        // res.send('test')
-    }
+    
 }
 
 
