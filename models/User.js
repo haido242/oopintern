@@ -3,26 +3,17 @@ const ObjectId = require("mongodb").ObjectId
 const model = require('./model');
 
 class User extends model {
-    constructor(UserName, Password, Email, Gender, GroupName){
+    // constructor(UserName, Password, Email, Gender, GroupName){
+        constructor(data){
         super(model)
-        this.GroupName = GroupName
-        this.Name = UserName;
+        this.GroupName = data.GroupName
+        this.UserName = data.UserName;
         this.collectionName = "user"
-        this.Password = Password;
-        this.Email = Email;
-        this.Gender =Gender;
+        this.Password = data.Password;
+        this.Email = data.Email;
+        this.Gender =data.Gender;
     };
     
-    getData(){
-        return this.query().find()
-    }
-    addUser(){
-        return this.query().insertOne({UserName: this.Name, Password: this.Password, Email: this.Email,
-        Gender: this.Gender, GroupName: this.GroupName})
-    }
-    deleteUser(userId){
-        return this.query().deleteOne( { "_id" : ObjectId(userId) } )
-    }
 
 }
 

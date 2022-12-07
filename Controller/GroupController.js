@@ -2,14 +2,14 @@ const Group = require('../models/Group')
 
 const mongodb = require('mongodb')
 
-
+const {create, get, update, deleteData } = require('./BaseController')
+const collection = "group"
 
 const GroupController = {
     createGroup: async(req, res) => {
         try{
             const newGroup = new Group(req.body.GroupName)
-            const group = await newGroup.addGroup(newGroup)
-
+            create(newGroup, collection)
             res.json("add group success")
 
         }
@@ -21,11 +21,8 @@ const GroupController = {
     getGoupList: async(req, res) =>{
         try{
 
-            const newGroup =new Group()
-            const items =await newGroup.getData()
-            items.toArray((err, item)=> {
-                
-                res.json(item)
+            get(collection).then((data) =>{
+                res.json(data)
             })
         }catch(err){
             console.log(err)
@@ -34,25 +31,20 @@ const GroupController = {
     },
     deleteGroup: async(req, res) =>{
         try{
-            const GroupId = req.params['id']
-            const group = new Group()
-            await group.deleteGroup(GroupId)
+            const id = req.params['id']
+            deleteData(id, collection)
             res.status(200).json("delete success")
         }catch (err){
             console.log(err)
             res.status(500).json("delete fail!")
         }
     },
+    
     updateGroup: async (req, res)=>{
         try{
-            const GoupId = req.params['id'];
-            const newGroup = new Group(req.body.GroupName)
-            await newGroup.query().updateOne(
-                { _id : mongodb.ObjectId(GoupId) },
-                {
-                    $mul : newGroup
-                }
-            )
+            const id = req.params['id'];
+            const data = req.body
+            update(id, data, collection)
             res.status(200).json("updated")
         }catch(err){
             console.log(err)
