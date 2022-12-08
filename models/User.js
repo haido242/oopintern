@@ -1,12 +1,7 @@
-
-const ObjectId = require("mongodb").ObjectId
-const model = require('./model');
-
-class User extends model {
-    // constructor(UserName, Password, Email, Gender, GroupName){
+const Group = require('./Group')
+class User extends  Group{
         constructor(data){
-        super(model)
-        this.GroupName = data.GroupName
+        super(Group.GroupName = data.GroupName)
         this.UserName = data.UserName;
         this.collectionName = "user"
         this.Password = data.Password;

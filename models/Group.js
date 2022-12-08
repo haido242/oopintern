@@ -1,10 +1,9 @@
-const ObjectId = require("mongodb").ObjectId
-const model = require('./model');
-class Group extends model{
+
+class Group{
     constructor(GroupName){
-        super(model)
         this.collectionName = "group";
         this.GroupName = GroupName;
+        this.member = []
     }
 }
 

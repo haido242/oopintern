@@ -1,15 +1,13 @@
 const Group = require('../models/Group')
-
-const mongodb = require('mongodb')
-
-const {create, get, update, deleteData } = require('./BaseController')
+const ObjectId = require('mongodb').ObjectId
+const mongodb = require('../mongo')
+const baseController = require('./BaseController')
 const collection = "group"
-
-const GroupController = {
-    createGroup: async(req, res) => {
+class GroupController  {
+     static createGroup (req, res)  {
         try{
             const newGroup = new Group(req.body.GroupName)
-            create(newGroup, collection)
+            baseController.create(newGroup, collection)
             res.json("add group success")
 
         }
@@ -17,38 +15,45 @@ const GroupController = {
             console.log(err)
             res.json("add group fail")
         }
-    },
-    getGoupList: async(req, res) =>{
+    }
+     static getGoupList (req, res) {
         try{
 
-            get(collection).then((data) =>{
+            baseController.get(collection).then((data) =>{
                 res.json(data)
             })
         }catch(err){
             console.log(err)
             res.json("get fail")
         }
-    },
-    deleteGroup: async(req, res) =>{
+    }
+     static deleteGroup(req, res) {
         try{
             const id = req.params['id']
-            deleteData(id, collection)
+            baseController.deleteData(id, collection)
             res.status(200).json("delete success")
         }catch (err){
             console.log(err)
             res.status(500).json("delete fail!")
         }
-    },
+    }
     
-    updateGroup: async (req, res)=>{
+     static updateGroup(req, res){
         try{
             const id = req.params['id'];
             const data = req.body
-            update(id, data, collection)
+            baseController.update(id, data, collection)
             res.status(200).json("updated")
         }catch(err){
             console.log(err)
             res.json("update fail!")
+        }
+    }
+     static addMemberGroup(id, idUser){
+        try{
+            return mongodb.getDb().collection('group').updateOne({ "_id" : ObjectId(id) }, {$push: {member: {'id':idUser}}})
+        }catch(err){
+            return err
         }
     }
 }
