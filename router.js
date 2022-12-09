@@ -1,15 +1,16 @@
 const router = require('express').Router()
 const User = require('./Controller/userController')
 const Group  = require('./Controller/GroupController')
-
+const test = require('./Controller/test')
+const user = new User
 //user
-router.post('/createUser', User.createUser)
+// router.post('/createUser', user.createUser)
 
-router.get('/getListUser', User.getUserList)
+router.get('/getListUser', user.getUserList)
 
-router.delete('/delete/:id', User.deleteUser)
+// router.delete('/delete/:id', user.deleteUser)
 
-router.put('/updateUser/:id', User.updateUser)
+// router.put('/updateUser/:id', user.updateUser)
 
 //group
 router.post('/group', Group.createGroup)
@@ -20,6 +21,7 @@ router.put('/group/:id', Group.updateGroup)
 
 router.delete('/group/:id', Group.deleteGroup)
 
-
+const Test = new test
+router.get('/test', Test.get)
 
 module.exports = router

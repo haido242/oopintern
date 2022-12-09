@@ -8,7 +8,7 @@ const UserRouter = require('./router')
 app.use(express.json())
 app.use(bodyParser.json())
 app.use(morgan("combined"))
-app.use(cors)
+// app.use(cors)
 mongo.connectToServer((err)=>{
     if(err) console.log(err)
 })

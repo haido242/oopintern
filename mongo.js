@@ -7,7 +7,6 @@ const MongoClient = require( 'mongodb' ).MongoClient;
 var _db;
 
 module.exports = {
-
   connectToServer: function( callback ) {
     MongoClient.connect( dbURL,  { useNewUrlParser: true }, function( err, client ) {
       _db  = client.db('test_db');
