@@ -1,27 +1,25 @@
 const router = require('express').Router()
 const User = require('./Controller/userController')
-const Group  = require('./Controller/GroupController')
-const test = require('./Controller/test')
+const Group = require('./Controller/GroupController')
 const user = new User
+const group = new Group
 //user
-// router.post('/createUser', user.createUser)
+router.post('/createUser', user.createUser)
 
 router.get('/getListUser', user.getUserList)
 
-// router.delete('/delete/:id', user.deleteUser)
+router.delete('/delete/:id', user.deleteUser)
 
-// router.put('/updateUser/:id', user.updateUser)
+router.put('/updateUser/:id', user.updateUser)
 
 //group
-router.post('/group', Group.createGroup)
+router.post('/group', group.createGroup)
 
-router.get('/group', Group.getGoupList)
+router.get('/group', group.getGoupList)
 
-router.put('/group/:id', Group.updateGroup)
+// router.put('/group/:id', group.updateGroup)
 
-router.delete('/group/:id', Group.deleteGroup)
+router.delete('/group/:id', group.deleteGroup)
 
-const Test = new test
-router.get('/test', Test.get)
 
 module.exports = router
