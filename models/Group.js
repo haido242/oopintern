@@ -1,24 +1,18 @@
 const database = require("../mongo");
 const ObjectId = require("mongodb").ObjectId;
-class Group {
-    constructor(GroupName) {
+const base = require('./base')
+class Group extends base{
+    constructor() {
+        super(base)
         this.collectionName = "group";
-        this.GroupName = GroupName;
         this.member = []
     }
-    get() {
-        return database.getDb().collection("group").find()
+    addMember(id, data){
+        return database.getDb().collection('group').updateOne({"_id": ObjectId(id) },
+        {$push: {member: data}}
+        )
     }
-    add(data) {
-        return database.getDb().collection('group').insertOne(data)
-    }
-    del(id) {
-        return database.getDb().collection('group').deleteOne({ "_id": ObjectId(id) })
-    }
-    update(id, data) {
-        return database.getDb().collection('group').updateOne({ "_id": ObjectId(id) },
-            { $set: data })
-    }
+   
 }
 
 module.exports = Group

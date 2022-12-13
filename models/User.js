@@ -6,20 +6,7 @@ class User  extends base{
         super(base)
         this.collectionName = "user";
     }
-
-    // get() {
-    //     return database.getDb().collection("user").find()
-    // };
-    add(data) {
-        return database.getDb().collection('user').insertOne(data)
-    }
-    del(id) {
-        return database.getDb().collection('user').deleteOne({ "_id": ObjectId(id) })
-    }
-    update(id, data) {
-        return database.getDb().collection('user').updateOne({ "_id": ObjectId(id) },
-            { $set: data })
-    }
+    
 }
 
 module.exports = User;

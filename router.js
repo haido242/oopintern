@@ -8,9 +8,13 @@ router.post('/createUser', user.createUser)
 
 router.get('/getListUser', user.getUserList)
 
+router.get('/getUser/:id', user.getUserByid)
+
 router.delete('/delete/:id', user.deleteUser)
 
 router.put('/updateUser/:id', user.updateUser)
+
+// router.get('/getManyUser', user.getManyById)
 
 //group
 router.post('/group', group.createGroup)
