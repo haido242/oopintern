@@ -3,13 +3,13 @@ const ObjectId = require("mongodb").ObjectId;
 
 
 class base {
-    constructor(collectionName){
+    constructor(collectionName) {
         this.collectionName
     }
     get() {
         return database.getDb().collection(this.collectionName).find()
     };
-    getById(id){
+    getById(id) {
         return database.getDb().collection(this.collectionName).find({ "_id": ObjectId(id) })
     }
     add(data) {

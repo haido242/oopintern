@@ -2,7 +2,9 @@ const User = require("../models/User");
 const userModel = new User();
 const joi = require('joi')
 class userController {
+
   async createUser(req, res) {
+
     try {
       const newUser = req.body;
       const schema = joi.object().keys({

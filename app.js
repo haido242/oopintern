@@ -9,9 +9,9 @@ app.use(express.json())
 app.use(bodyParser.json())
 app.use(morgan("combined"))
 // app.use(cors)
-mongo.connectToServer((err)=>{
-    if(err) console.log(err)
+mongo.connectToServer((err) => {
+    if (err) console.log(err)
 })
 app.use('/', UserRouter)
 const port = 3001
-app.listen(port, ()=> console.log("app running in port " + port))
+app.listen(port, () => console.log("app running in port " + port))
