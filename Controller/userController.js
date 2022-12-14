@@ -34,7 +34,7 @@ class userController {
       data.toArray().then((data) => res.json(data));
     } catch (err) {
       console.log(err);
-      res.json("get list user is fail!");
+      res.status(500).json("get list user is fail!");
     }
   }
   async deleteUser(req, res) {
@@ -61,8 +61,8 @@ class userController {
   async getUserByid(req, res) {
     try {
       const id = req.params["id"];
-      const data = await userModel.getById(id).toArray();
-      data.then((data) => res.json(data));
+      const data = await userModel.getById(id);
+      data.toArray().then((data) => res.json(data));
     } catch (err) {
       console.log(err);
       res.send(500, "get user fail");
