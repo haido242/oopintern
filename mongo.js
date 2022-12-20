@@ -16,5 +16,4 @@ module.exports = {
   getDb: function () {
     return _db;
   },
-  // note: không xử lý được nhiều req cùng lúc do có 1 biến _db
 };
