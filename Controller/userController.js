@@ -68,6 +68,16 @@ class userController {
       res.send(500, "get user fail");
     }
   }
+  async searchUserName(req, res) {
+    try{
+      const searchValue = req.body.searchValue
+      const data = await userModel.search();
+      data.toArray().then((data) => res.json(data));
+    }catch(err){
+      console.log(err)
+      res.status(500).json("search fail")
+    }
+  }
   // async getManyById(req, res) {
   //   try{
   //     const datas = []

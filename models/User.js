@@ -7,8 +7,10 @@ class User extends base {
         this.collectionName = "user";
     }
 
+    search(value){
+        return database.getDb().collection('user').find({"UserName":{$text: {$search: value}}})
+    }
 }
-
 module.exports = User;
 
 

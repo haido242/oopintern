@@ -14,6 +14,8 @@ router.delete('/delete/:id', user.deleteUser)
 
 router.put('/updateUser/:id', user.updateUser)
 
+router.get('/search', user.searchUserName)
+
 // router.get('/getManyUser', user.getManyById)
 
 //group
