@@ -69,31 +69,29 @@ class userController {
     }
   }
   async searchUserName(req, res) {
-    try{
+    try {
       const searchValue = req.body.searchValue
-      const data = await userModel.search();
+      const data = await userModel.search(searchValue);
       data.toArray().then((data) => res.json(data));
-    }catch(err){
+    } catch (err) {
       console.log(err)
       res.status(500).json("search fail")
     }
   }
-  // async getManyById(req, res) {
-  //   try{
-  //     const datas = []
-  //     const ids = req.body.id
-  //      ids.forEach(element => {
-  //       const data = userModel.getById(element).toArray()
-  //       data.then(data => {datas.push(element)
-  //       return datas})
-  //     });
-
-  //     datas.then(data => res.json(data))
-  //   }catch(err){
-  //     console.log(err)
-  //     res.send(500, "get fail")
-  //   }
-  // }
+  async getAndPagination(req, res) {
+    try {
+      const pageNumber = req.params.page - 1
+      const numberItemOfPage = req.body.itemOfPage
+      const indexItem = pageNumber * numberItemOfPage
+      const data = await userModel.get().skip(indexItem).limit(numberItemOfPage).sort('UserName')
+      data.toArray().then((data) => {
+        res.json(data)
+      })
+    } catch (err) {
+      console.log(err)
+      res.json(err)
+    }
+  }
 }
 
 module.exports = userController;

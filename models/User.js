@@ -7,8 +7,8 @@ class User extends base {
         this.collectionName = "user";
     }
 
-    search(value){
-        return database.getDb().collection('user').find({"UserName":{$text: {$search: value}}})
+    search(value) {
+        return database.getDb().collection('user').find({ UserName: { $regex: value } })
     }
 }
 module.exports = User;

@@ -16,6 +16,8 @@ router.put('/updateUser/:id', user.updateUser)
 
 router.get('/search', user.searchUserName)
 
+router.get('/getListUser/:page', user.getAndPagination)
+
 // router.get('/getManyUser', user.getManyById)
 
 //group
