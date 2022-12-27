@@ -7,20 +7,23 @@ class base {
         this.collectionName
     }
     get() {
-        return database.getDb().collection(this.collectionName).find()
+        return this.query().find()
     };
     getById(id) {
-        return database.getDb().collection(this.collectionName).find({ "_id": ObjectId(id) })
+        return this.query().find({ "_id": ObjectId(id) })
     }
     add(data) {
-        return database.getDb().collection(this.collectionName).insertOne(data)
+        return this.query().insertOne(data)
     }
     del(id) {
-        return database.getDb().collection(this.collectionName).deleteOne({ "_id": ObjectId(id) })
+        return this.query().deleteOne({ "_id": ObjectId(id) })
     }
     update(id, data) {
-        return database.getDb().collection(this.collectionName).updateOne({ "_id": ObjectId(id) },
+        return this.query().updateOne({ "_id": ObjectId(id) },
             { $set: data })
+    }
+    query(){
+        return database.getDb().collection(this.collectionName)
     }
 }
 

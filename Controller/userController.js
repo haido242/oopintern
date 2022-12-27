@@ -1,10 +1,9 @@
 const User = require("../models/User");
 const userModel = new User();
-const joi = require('joi')
+const joi = require("joi");
+const { number } = require("joi");
 class userController {
-
   async createUser(req, res) {
-
     try {
       const newUser = req.body;
       const schema = joi.object().keys({
@@ -13,15 +12,16 @@ class userController {
         Email: joi.string().email().required(),
         Gender: joi.string().required(),
         GroupId: joi.string().required(),
-      })
+        CreateAt: joi.date().required()
+      });
 
-      const data = schema.validate(newUser)
+      const data = schema.validate(newUser);
       if (data.error) {
-        res.status(422).json(data.error)
+        res.status(422).json(data.error);
       } else {
         await userModel.add(data.value);
 
-        res.json(data)
+        res.json(data);
       }
     } catch (err) {
       console.log(err);
@@ -70,26 +70,33 @@ class userController {
   }
   async searchUserName(req, res) {
     try {
-      const searchValue = req.body.searchValue
+      const searchValue = req.body.searchValue;
       const data = await userModel.search(searchValue);
       data.toArray().then((data) => res.json(data));
     } catch (err) {
-      console.log(err)
-      res.status(500).json("search fail")
+      console.log(err);
+      res.status(500).json("search fail");
     }
   }
   async getAndPagination(req, res) {
     try {
-      const pageNumber = req.params.page - 1
-      const numberItemOfPage = req.body.itemOfPage
-      const indexItem = pageNumber * numberItemOfPage
-      const data = await userModel.get().skip(indexItem).limit(numberItemOfPage).sort('UserName')
+      const { page, limit, sort, filter, field} = req.query;
+      const indexItem = (page - 1) * limit;
+      const query = { [field]: filter };
+      let sortQuery = ''
+      sort?.charAt(0) != '-' ? sortQuery = { [sort.replace('-', '')]: -1 } : sortQuery = { [sort]: 1 }
+      const data = await userModel
+        .query()
+        .find(query)
+        .skip(indexItem)
+        .limit(parseInt(limit))
+        .sort(sortQuery)
       data.toArray().then((data) => {
-        res.json(data)
-      })
+        res.json(data);
+      });
     } catch (err) {
-      console.log(err)
-      res.json(err)
+      console.log(err);
+      res.json(err);
     }
   }
 }
