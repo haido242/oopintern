@@ -1,7 +1,6 @@
 const User = require("../models/User");
 const userModel = new User();
 const joi = require("joi");
-const { number } = require("joi");
 class userController {
   async createUser(req, res) {
     try {
@@ -97,6 +96,19 @@ class userController {
     } catch (err) {
       console.log(err);
       res.json(err);
+    }
+  }
+  async findByDate(req, res) {
+    try {
+      const date = await userModel.query().find({CreateAt:{$gte:"2021-12-01",$lt:"2020-12-27"}})
+      date.toArray()
+      .then((data)=>{
+        res.json(data)
+      })
+        
+    } catch (error) {
+      console.log(error)
+      res.json("err")
     }
   }
 }

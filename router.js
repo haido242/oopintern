@@ -18,6 +18,8 @@ router.get('/search', user.searchUserName)
 
 router.get('/getListUsers', user.getAndPagination)
 
+router.get('/getByDate', user.findByDate)
+
 // router.get('/getManyUser', user.getManyById)
 
 //group
