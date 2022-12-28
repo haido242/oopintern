@@ -11,7 +11,7 @@ class userController {
         Email: joi.string().email().required(),
         Gender: joi.string().required(),
         GroupId: joi.string().required(),
-        CreateAt: joi.date().required()
+        CreateAt: joi.date().required(),
       });
 
       const data = schema.validate(newUser);
@@ -79,17 +79,19 @@ class userController {
   }
   async getAndPagination(req, res) {
     try {
-      const { page, limit, sort, filter, field} = req.query;
+      const { page, limit, sort, filter, field } = req.query;
       const indexItem = (page - 1) * limit;
-      const query = { [field]: filter };
-      let sortQuery = ''
-      sort?.charAt(0) != '-' ? sortQuery = { [sort.replace('-', '')]: -1 } : sortQuery = { [sort]: 1 }
+      const filterQuery = { [field]: filter };
+      let sortQuery = "";
+      sort?.charAt(0) != "-"
+        ? (sortQuery = { [sort.replace("-", "")]: -1 })
+        : (sortQuery = { [sort]: 1 });
       const data = await userModel
         .query()
-        .find(query)
+        .find(filterQuery)
         .skip(indexItem)
         .limit(parseInt(limit))
-        .sort(sortQuery)
+        .sort(sortQuery);
       data.toArray().then((data) => {
         res.json(data);
       });
@@ -100,15 +102,19 @@ class userController {
   }
   async findByDate(req, res) {
     try {
-      const date = await userModel.query().find({CreateAt:{$gte:"2021-12-01",$lt:"2020-12-27"}})
-      date.toArray()
-      .then((data)=>{
-        res.json(data)
-      })
-        
+      const dateStart = new Date(req.body.dateStart);
+      const dateEnd = new Date(req.body.dateEnd);
+      
+      console.log(dateStart, dateEnd);
+      const data = await userModel
+        .query()
+        .find({ CreateAt: { $gte: dateStart, $lt: dateEnd } });
+      data.toArray().then((data) => {
+        res.json({count : data.length, data : data});
+      });
     } catch (error) {
-      console.log(error)
-      res.json("err")
+      console.log(error);
+      res.json("err");
     }
   }
 }
