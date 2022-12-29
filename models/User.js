@@ -8,16 +8,7 @@ class User extends base {
     }
 
     search(value) {
-        return database.getDb().collection('user').find({ UserName: { $regex: value } })
+        return database.getDb().collection('user').find({ UserName: { $regex: value } }).sort({UserName:1})
     }
 }
 module.exports = User;
-
-
-// MVC , 3 lop
-
-// user controller - group controller
-
-// service
-
-// model 

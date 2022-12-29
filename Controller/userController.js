@@ -69,7 +69,8 @@ class userController {
   }
   async searchUserName(req, res) {
     try {
-      const searchValue = req.body.searchValue;
+      let searchValue = req.params.searchValue;
+      console.log(searchValue)
       const data = await userModel.search(searchValue);
       data.toArray().then((data) => res.json(data));
     } catch (err) {
@@ -104,7 +105,6 @@ class userController {
     try {
       const dateStart = new Date(req.body.dateStart);
       const dateEnd = new Date(req.body.dateEnd);
-
       console.log(dateStart, dateEnd);
       const data = await userModel
         .query()
