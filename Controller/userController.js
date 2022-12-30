@@ -83,19 +83,38 @@ class userController {
       const { page, limit, sort, filter, field } = req.query;
       const indexItem = (page - 1) * limit;
       const filterQuery = { [field]: filter };
-      let sortQuery = "";
-      sort?.charAt(0) != "-"
-        ? (sortQuery = { [sort.replace("-", "")]: -1 })
-        : (sortQuery = { [sort]: 1 });
-      const data = await userModel
-        .query()
-        .find(filterQuery)
-        .skip(indexItem)
-        .limit(parseInt(limit))
-        .sort(sortQuery);
-      data.toArray().then((data) => {
-        res.json(data);
-      });
+      const total = await userModel.count()
+      if (sort) {
+
+        let sortQuery = "";
+        sort?.charAt(0) != "-"
+          ? (sortQuery = { [sort.replace("-", "")]: -1 })
+          : (sortQuery = { [sort]: 1 });
+        const data = await userModel
+          .query()
+          .find(filterQuery)
+          .skip(indexItem)
+          .limit(parseInt(limit))
+          .sort(sortQuery);
+        data.toArray().then((data) => {
+          res.json({
+            total: total,
+            data: data
+          });
+        });
+      } else {
+        const data = await userModel
+          .query()
+          .find(filterQuery)
+          .skip(indexItem)
+          .limit(parseInt(limit))
+        data.toArray().then((data) => {
+          res.json({
+            total: total,
+            data: data
+          });
+        });
+      }
     } catch (err) {
       console.log(err);
       res.json(err);

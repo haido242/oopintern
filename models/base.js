@@ -25,6 +25,9 @@ class base {
     query(){
         return database.getDb().collection(this.collectionName)
     }
+    count(){
+        return this.get().count()
+    }
 }
 
 module.exports = base
