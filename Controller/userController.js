@@ -88,8 +88,8 @@ class userController {
 
         let sortQuery = "";
         sort?.charAt(0) != "-"
-          ? (sortQuery = { [sort.replace("-", "")]: -1 })
-          : (sortQuery = { [sort]: 1 });
+          ? (sortQuery = { [sort.replace("-", "")]: 1 })
+          : (sortQuery = { [sort]: -1 });
         const data = await userModel
           .query()
           .find(filterQuery)
