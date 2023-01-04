@@ -87,9 +87,9 @@ class userController {
       if (sort) {
 
         let sortQuery = "";
-        sort?.charAt(0) != "-"
-          ? (sortQuery = { [sort.replace("-", "")]: 1 })
-          : (sortQuery = { [sort]: -1 });
+        sort?.charAt(0) == "-"
+        ? (sortQuery = { [sort.replace("-", "")]: -1 })
+        : (sortQuery = { [sort]: 1 });
         const data = await userModel
           .query()
           .find(filterQuery)
@@ -122,9 +122,9 @@ class userController {
   }
   async findByDate(req, res) {
     try {
-      const dateStart = new Date(req.body.dateStart);
-      const dateEnd = new Date(req.body.dateEnd);
-      console.log(dateStart, dateEnd);
+      const dateStart = new Date(Number(req.query.dateStart));
+      const dateEnd = new Date(Number(req.query.dateEnd));
+      console.log(dateStart, dateEnd, req.query.dateStart);
       const data = await userModel
         .query()
         .find({ CreateAt: { $gte: dateStart, $lt: dateEnd } }).sort({ CreateAt: -1 });
