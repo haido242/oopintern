@@ -7,10 +7,11 @@ const morgan = require('morgan')
 const UserRouter = require('./router')
 app.use(express.json())
 app.use(bodyParser.json())
-app.use(morgan("combined"))
+app.use(morgan("tiny"))
 app.use(cors())
 mongo.connectToServer((err) => {
     if (err) console.log(err)
+    else console.log('connected to server!!!')
 })
 app.use('/', UserRouter)
 const port = 3001

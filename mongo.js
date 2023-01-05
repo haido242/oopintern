@@ -1,5 +1,5 @@
 
-const dbURL = "mongodb://0.0.0.0:27017/user"
+const dbURL = "mongodb://0.0.0.0:27017/"
 
 const MongoClient = require('mongodb').MongoClient;
 
