@@ -83,7 +83,7 @@ class userController {
       const { page, limit, sort, filter, field } = req.query;
       const indexItem = (page - 1) * limit;
       const filterQuery = { [field]: filter };
-      const total = await userModel.count()
+      const total = await userModel.query().find(filterQuery).count()
       if (sort) {
 
         let sortQuery = "";
@@ -125,11 +125,12 @@ class userController {
       const dateStart = new Date(Number(req.query.dateStart));
       const dateEnd = new Date(Number(req.query.dateEnd));
       console.log(dateStart, dateEnd, req.query.dateStart);
+      const total = await userModel.count()
       const data = await userModel
         .query()
         .find({ CreateAt: { $gte: dateStart, $lt: dateEnd } }).sort({ CreateAt: -1 });
       data.toArray().then((data) => {
-        res.json({ count: data.length, data: data });
+        res.json({ count: data.length, data: data, total: total });
       });
     } catch (error) {
       console.log(error);
