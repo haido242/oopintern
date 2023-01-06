@@ -94,8 +94,9 @@ class userController {
       const total = await userModel.query().find(filterQuery).count()
       const data = await query
       data.toArray().then((data) => {
+        
         res.json({
-          page: page,
+        page: page,
           limit: limit,
           total: total,
           data: data
@@ -116,7 +117,9 @@ class userController {
         .query()
         .find({ CreateAt: { $gte: dateStart, $lt: dateEnd } }).sort({ CreateAt: -1 });
       data.toArray().then((data) => {
-        res.json({ count: data.length, data: data, total: total });
+
+
+          res.json({ count: data.length, data: data, total: total });
       });
     } catch (error) {
       console.log(error);
