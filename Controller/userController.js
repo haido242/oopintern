@@ -111,14 +111,12 @@ class userController {
     try {
       const dateStart = new Date(Number(req.query.dateStart));
       const dateEnd = new Date(Number(req.query.dateEnd));
-      console.log(dateStart, dateEnd, req.query.dateStart);
+      // console.log(dateStart, dateEnd, req.query.dateStart);
       const total = await userModel.count()
       const data = await userModel
         .query()
         .find({ CreateAt: { $gte: dateStart, $lt: dateEnd } }).sort({ CreateAt: -1 });
       data.toArray().then((data) => {
-
-
           res.json({ count: data.length, data: data, total: total });
       });
     } catch (error) {

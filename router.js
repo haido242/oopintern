@@ -27,7 +27,7 @@ router.post('/group', group.createGroup)
 
 router.get('/group', group.getGoupList)
 
-// router.put('/group/:id', group.updateGroup)
+router.put('/group/:id', group.updateGroup)
 
 router.delete('/group/:id', group.deleteGroup)
 
