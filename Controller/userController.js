@@ -124,6 +124,26 @@ class userController {
       res.json("err");
     }
   }
+  test(req,res) {
+    try{
+      const params = req.query
+      let testArray = params.a
+      let newArray = []
+      let arrayRes = []
+      testArray.forEach(element => {
+        newArray.push(element.split(','))  
+      });
+      newArray.forEach(e => {
+        arrayRes.push(...e)
+      })
+      console.log(arrayRes)
+      
+      res.send(arrayRes)
+    }catch(e){
+      console.log(e)
+      res.send(e)
+    }
+  }
 }
 
 module.exports = userController;
