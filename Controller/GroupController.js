@@ -50,17 +50,5 @@ class GroupController {
     }
   }
 }
-
 module.exports = GroupController;
 
-// userIds = [1,2, 3, 4,5]
-
-// let data = []
-
-// for(let i = 0; i < userIds.length; i++){
-//     let user = this.model.getById(userIds[i])
-//     data.push(user)
-// }
-
-// mang userIds: [123]
-// return 3 cách,
