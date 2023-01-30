@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const userModel = new User();
 const joi = require("joi");
+const { use } = require("../router");
 class userController {
   async createUser(req, res) {
     try {
@@ -67,15 +68,27 @@ class userController {
       res.send(500, "get user fail");
     }
   }
-  async searchUserName(req, res) {
+  // async searchUserName(req, res) {
+  //   try {
+  //     let searchValue = req.params.searchValue;
+  //     console.log(searchValue)
+  //     const data = await userModel.search(searchValue);
+  //     data.toArray().then((data) => res.json(data));
+  //   } catch (err) {
+  //     console.log(err);
+  //     res.status(500).json("search fail");
+  //   }
+  // }
+  async search(req, res) {
     try {
-      let searchValue = req.params.searchValue;
-      console.log(searchValue)
-      const data = await userModel.search(searchValue);
-      data.toArray().then((data) => res.json(data));
-    } catch (err) {
-      console.log(err);
-      res.status(500).json("search fail");
+      const {field, value} = req.query
+      const data = await userModel.search(field, value)
+      data.toArray().then((data) => {
+        res.json(data)
+      })
+    } catch (e) {
+      console.log(e)
+      res.send('search fail')
     }
   }
   async getAndPagination(req, res) {
@@ -124,21 +137,25 @@ class userController {
       res.json("err");
     }
   }
-  test(req,res) {
+  async test(req,res) {
     try{
       const params = req.query
-      let testArray = params.a
-      let newArray = []
-      let arrayRes = []
-      testArray.forEach(element => {
-        newArray.push(element.split(','))  
-      });
-      newArray.forEach(e => {
-        arrayRes.push(...e)
+    //   let testArray = params.GroupId
+    //   let newArray = []
+    //   let arrayRes = []
+    //   testArray.forEach(element => {
+    //     newArray.push(element.split(','))  
+    //   });
+    //   newArray.forEach(e => {
+    //     arrayRes.push(...e)
+    //   })
+    //   console.log(arrayRes)
+      const data = await userModel.query.find({GroupId: params.GroupId})
+      data.toArray().then((data)=>{
+        res.json(data)
       })
-      console.log(arrayRes)
-      
-      res.send(arrayRes)
+    //   res.send(arrayRes)
+      console.log(params)
     }catch(e){
       console.log(e)
       res.send(e)
